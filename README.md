@@ -13,7 +13,7 @@ git, Pythonがインストールされていることを前提とする
 > python -m venv venv
 
 # 仮想環境を起動
-> . venv/Scripts/activate
+> . venv\Scripts\activate
 
 # ライブラリをインストール
 > pip install -r requirements.txt
