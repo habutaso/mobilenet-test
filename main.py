@@ -16,8 +16,8 @@ preprocess = weights.transforms()
 
 # Initialize variables.
 cap = cv2.VideoCapture(0)  # Capture from camera.
-# cap.set(3, 1920)               # Set video stream frame width.  Remove '#' and change the value according to your needs.
-# cap.set(4, 1080)               # Set video stream frame height. Remove '#' and change the value according to your needs.
+# cap.set(3, 1920)
+# cap.set(4, 1080)
 winname = "Annotated"  # Window title.
 
 # Exception definition.
