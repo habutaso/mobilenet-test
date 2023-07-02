@@ -8,7 +8,12 @@ from torchvision.models.detection import (
 
 # Step 1: Initialize model with the best available weights
 weights = SSDLite320_MobileNet_V3_Large_Weights.DEFAULT
-model = ssdlite320_mobilenet_v3_large(weights=weights)
+model = ssdlite320_mobilenet_v3_large(
+    weights=weights,
+    score_thresh=0.8,
+    detection_per_img=10,
+    topk_candidates=3,
+)
 model = model.eval()
 
 # Step 2: Initialize the inference transforms
@@ -16,12 +21,17 @@ preprocess = weights.transforms()
 
 # Initialize variables.
 cap = cv2.VideoCapture(0)  # Capture from camera.
-# cap.set(3, 1920)
-# cap.set(4, 1080)
+cap.set(3, 244)
+cap.set(4, 244)
+cap.set(cv2.CAP_PROP_FPS, 15)
 winname = "Annotated"  # Window title.
 
 # Exception definition.
 BackendError = type("BackendError", (Exception,), {})
+
+
+labels = []
+boxes = []
 
 
 def IsWindowVisible(winname):
@@ -38,24 +48,16 @@ def IsWindowVisible(winname):
         return False
 
 
-while True:
-    # Capture image by opencv.
-    ret, orig_image = cap.read()
-    if orig_image is None:
-        continue
-
-    # Convert image from BGR to RGB.
+def detection(orig_image):
+    global labels
+    global boxes
     rgb_image = cv2.cvtColor(orig_image, cv2.COLOR_BGR2RGB)
-
-    # Convert image from numpy.ndarray to torchvision image format.
     rgb_image = rgb_image.transpose((2, 0, 1))
     rgb_image = rgb_image / 255.0
     rgb_image = torch.FloatTensor(rgb_image)
 
-    # Step 3: Apply inference preprocessing transforms
     batch = [preprocess(rgb_image)]
 
-    # Step 4: Use the model and visualize the prediction
     with torch.no_grad():
         prediction = model(batch)[0]
 
@@ -66,6 +68,19 @@ while True:
         if score_int > score_threshold
     ]
     boxes = prediction["boxes"][prediction["scores"] > score_threshold]
+
+
+# i = 0
+
+while True:
+    # i += 1
+    # Capture image by opencv.
+    ret, orig_image = cap.read()
+    if orig_image is None:
+        continue
+
+    # if i % 5 == 0:
+    detection(orig_image)
 
     # Draw result.
     for box, label in zip(boxes, labels):
