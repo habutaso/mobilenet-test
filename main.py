@@ -48,7 +48,7 @@ def IsWindowVisible(winname):
         return False
 
 
-def detection(orig_image):
+def detect(orig_image):
     global labels
     global boxes
     rgb_image = cv2.cvtColor(orig_image, cv2.COLOR_BGR2RGB)
@@ -80,7 +80,7 @@ while True:
         continue
 
     # if i % 5 == 0:
-    detection(orig_image)
+    detect(orig_image)
 
     # Draw result.
     for box, label in zip(boxes, labels):
