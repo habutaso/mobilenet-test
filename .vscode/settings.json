@@ -1,4 +1,7 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1500,
   "terminal.integrated.env.windows": {
@@ -26,6 +29,10 @@
     "**/Thumbs.db": true,
     "**/*.pyc": true,
     "**/__pycache__": true,
-  }
+  },
+  "isort.check": true,
+  "isort.interpreter": [
+    "${workspace}/venv/bin/isort"
+  ]
   
 }
